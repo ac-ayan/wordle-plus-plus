@@ -1,0 +1,99 @@
+* {
+  color: black;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+body {
+  background-color: rgb(248, 248, 255);
+}
+.game-container {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  text-align: center;
+  width: 510px;
+  border-bottom: solid 1px rgb(199, 194, 214);
+}
+.tile-section {
+  width: 330px;
+  margin-bottom: 30px;
+}
+.keys-section {
+  width: 510px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.keys-section button {
+  width: 43px;
+  height: 58px;
+  border: none;
+  margin: 4px;
+  border-radius: 4px;
+}
+.keys-section button:nth-child(11) {
+  margin-left: 30px;
+}
+.keys-section button:nth-child(20),
+.keys-section button:nth-child(28) {
+  width: 68px;
+}
+.tile-section div {
+  display: flex;
+}
+.tile-section .tile {
+  width: 62px;
+  height: 62px;
+  border: 2px solid rgb(225, 225, 226);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin: 2px;
+  justify-content: center;
+}
+.message-section {
+  height: 30px;
+}
+.message-section p {
+  background-color: lightseagreen;
+  border-radius: 10px;
+  margin: 0;
+  padding: 10px;
+}
+.change-to-grey {
+  background-color: #787c7e !important;
+  border: none !important;
+  color: white;
+  font-weight: 600;
+}
+.change-to-yellow {
+  background-color: #c9b458 !important;
+  border: none !important;
+  color: white;
+  font-weight: 600;
+}
+.change-to-green {
+  background-color: #6aaa64 !important;
+  border: none !important;
+  color: white;
+  font-weight: 600;
+}
+.tile.flip {
+    animation: 0.3s linear flipping;
+}
+
+@keyframes flipping{
+    0% {
+        transform: rotateX(0deg);
+    }
+    50%{
+        transform: rotateX(90deg);
+    }
+    100%{
+        transform: rotateX(0deg);
+    }
+}
