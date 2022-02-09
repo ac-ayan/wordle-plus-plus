@@ -132,7 +132,7 @@ const checkRow = () => {
   //console.log("Inside Checkrow");
   const guess = guessRows[currentRow].join("");
   if (currentTile > 4) {
-    fetch(`https://wordle-plus-plus.herokuapp.com//check/?word=${guess}`)
+    fetch(`https://wordle-plus-plus.herokuapp.com/check/?word=${guess}`)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
