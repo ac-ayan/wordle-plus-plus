@@ -89,7 +89,7 @@ const handleClick = (letter) => {
     }
     if (letter === "ENTER") {
       //alert("ENTER")
-      console.log(statusCode);
+      //console.log(statusCode);
       if (currentTile === 0) {
         statusCode == 0;
       }
