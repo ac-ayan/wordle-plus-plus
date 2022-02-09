@@ -151,7 +151,7 @@ const checkRow = () => {
             if (currentRow < 4) {
               currentRow++;
               currentTile = 0;
-              status=0;
+              //status=0;
             }
           }
         }
