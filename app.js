@@ -55,7 +55,7 @@ const guessRows = [
 let currentRow = 0;
 let currentTile = 0;
 let isGameOver = false;
-let status=0;
+let statusCode = 0;
 
 guessRows.forEach((entireRow, rowIndex) => {
   const entireRowContainer = document.createElement("div");
@@ -89,10 +89,13 @@ const handleClick = (letter) => {
     }
     if (letter === "ENTER") {
       //alert("ENTER")
-      if(status===0)
-      {
+      console.log(statusCode);
+      if (currentTile === 0) {
+        statusCode == 0;
+      }
+      if (statusCode === 0) {
         checkRow();
-        status++;
+        statusCode++;
       }
       return;
     }
@@ -135,6 +138,7 @@ const checkRow = () => {
         console.log(json);
         if (json == "Entry word not found") {
           showMessage("Word not in list");
+          statusCode = 0;
           return;
         } else {
           manuverColor();
@@ -151,7 +155,7 @@ const checkRow = () => {
             if (currentRow < 4) {
               currentRow++;
               currentTile = 0;
-              //status=0;
+              statusCode = 0;
             }
           }
         }
