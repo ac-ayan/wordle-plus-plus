@@ -55,6 +55,7 @@ const guessRows = [
 let currentRow = 0;
 let currentTile = 0;
 let isGameOver = false;
+let status=0;
 
 guessRows.forEach((entireRow, rowIndex) => {
   const entireRowContainer = document.createElement("div");
@@ -88,7 +89,11 @@ const handleClick = (letter) => {
     }
     if (letter === "ENTER") {
       //alert("ENTER")
-      checkRow();
+      if(status===0)
+      {
+        checkRow();
+        status++;
+      }
       return;
     }
     addLetter(letter);
@@ -146,6 +151,7 @@ const checkRow = () => {
             if (currentRow < 4) {
               currentRow++;
               currentTile = 0;
+              status=0;
             }
           }
         }
