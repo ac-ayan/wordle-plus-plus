@@ -135,7 +135,7 @@ const checkRow = () => {
     fetch(`https://wordle-plus-plus.herokuapp.com/check/?word=${guess}`)
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
+        //console.log(json);
         if (json == "Entry word not found") {
           showMessage("Word not in list");
           statusCode = 0;
