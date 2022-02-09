@@ -4,7 +4,7 @@
   "description": "This is a customized version of wordle game with many interesting features to try! ",
   "main": "app.js",
   "scripts": {
-    "start:backend": "nodemon index.js",
+    "start:backend": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
