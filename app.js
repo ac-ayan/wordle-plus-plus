@@ -80,6 +80,34 @@ keys.forEach((key) => {
   keySection.append(buttonElement);
 });
 
+//* Handle Key Press START
+
+const handleKeyPress = (e) => {
+  console.log(e.key);
+  let letter = e.key.toUpperCase();
+  if (!isGameOver) {
+    if (letter === "BACKSPACE") {
+      deleteLetter();
+      return;
+    }
+    if (letter === "ENTER") {
+      //alert("ENTER")
+      //console.log(statusCode);
+      if (currentTile === 0) {
+        statusCode == 0;
+      }
+      if (statusCode === 0) {
+        checkRow();
+        statusCode++;
+      }
+      return;
+    }
+    addLetter(letter);
+  }
+};
+document.addEventListener("keydown", handleKeyPress);
+//* Handle Key Press END
+
 const handleClick = (letter) => {
   //console.log("clicked", letter)
   if (!isGameOver) {
@@ -149,7 +177,7 @@ const checkRow = () => {
           } else {
             if (currentRow >= 4) {
               isGameOver = true;
-              showMessage("Game Over!");
+              showMessage("Game Over! Wordle is "+wordle);
               return;
             }
             if (currentRow < 4) {
