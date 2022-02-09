@@ -7,12 +7,12 @@ const getWordle = () => {
   fetch("http://localhost:8000/word")
     .then((response) => response.json())
     .then((json) => {
-      console.log(json);
+      //console.log(json);
       wordle = json.toUpperCase();
     })
     .catch((err) => console.log(err));
 };
-getWordle()
+getWordle();
 const keys = [
   "Q",
   "W",
@@ -81,16 +81,18 @@ keys.forEach((key) => {
 
 const handleClick = (letter) => {
   //console.log("clicked", letter)
-  if (letter === "<<") {
-    deleteLetter();
-    return;
+  if (!isGameOver) {
+    if (letter === "<<") {
+      deleteLetter();
+      return;
+    }
+    if (letter === "ENTER") {
+      //alert("ENTER")
+      checkRow();
+      return;
+    }
+    addLetter(letter);
   }
-  if (letter === "ENTER") {
-    //alert("ENTER")
-    checkRow();
-    return;
-  }
-  addLetter(letter);
 };
 
 const addLetter = (letter) => {
@@ -121,28 +123,36 @@ const deleteLetter = () => {
 const checkRow = () => {
   //console.log("Inside Checkrow");
   const guess = guessRows[currentRow].join("");
-    if (currentTile > 4) {
-        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/?word=${guess}`)
-            .then(response => response.json())
-            .then(json => {
-            console.log(json);
-        })
-    manuverColor();
-    if (wordle == guess) {
-      showMessage("Magnificent!");
-      isGameOver = true;
-      return;
-    } else {
-      if (currentRow >= 4) {
-        isGameOver = true;
-        showMessage("Game Over!");
-        return;
-      }
-      if (currentRow < 4) {
-        currentRow++;
-        currentTile = 0;
-      }
-    }
+  if (currentTile > 4) {
+    fetch(`http://localhost:8000/check/?word=${guess}`)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        if (json == "Entry word not found") {
+          showMessage("Word not in list");
+          return;
+        } else {
+          manuverColor();
+          if (wordle == guess) {
+            showMessage("Magnificent!");
+            isGameOver = true;
+            return;
+          } else {
+            if (currentRow >= 4) {
+              isGameOver = true;
+              showMessage("Game Over!");
+              return;
+            }
+            if (currentRow < 4) {
+              currentRow++;
+              currentTile = 0;
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };
 

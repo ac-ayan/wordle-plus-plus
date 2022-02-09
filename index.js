@@ -3,13 +3,7 @@ const axios = require("axios").default;
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const corsOptions = {
-  origin: "*",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 require("dotenv").config();
 app.get("/word", (req, res) => {
   const options = {
@@ -25,12 +19,34 @@ app.get("/word", (req, res) => {
   axios
     .request(options)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       res.json(response.data[0]);
     })
     .catch((error) => {
       console.error(error);
     });
 });
+app.get("/check", (req, res) => {
+  const word = req.query.word;
+  var options = {
+    method: "GET",
+    url: "https://twinword-word-graph-dictionary.p.rapidapi.com/association/",
+    params: { entry: word },
+    headers: {
+      "x-rapidapi-host": "twinword-word-graph-dictionary.p.rapidapi.com",
+      "x-rapidapi-key": process.env.RAPID_API_KEY,
+    },
+  };
 
-app.listen(PORT, () => console.log("Server is running on port " + PORT));
+  axios
+    .request(options)
+    .then((response) => {
+      // console.log(response.data);
+      res.json(response.data.result_msg);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
+app.listen(process.env.PORT||PORT, () => console.log("Server is running on port " + PORT));
