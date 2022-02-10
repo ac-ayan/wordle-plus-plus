@@ -1,6 +1,7 @@
 const tileSection = document.querySelector(".tile-section");
 const keySection = document.querySelector(".keys-section");
 const messageSection = document.querySelector(".message-section");
+const bodySection = document.querySelector("body");
 
 let wordle;
 const getWordle = () => {
@@ -50,7 +51,7 @@ const guessRows = [
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
-  //   ["", "", "", "", ""],
+  ["", "", "", "", ""],
 ];
 let currentRow = 0;
 let currentTile = 0;
@@ -102,6 +103,7 @@ const handleKeyPress = (e) => {
       }
       return;
     }
+
     addLetter(letter);
   }
 };
@@ -132,7 +134,7 @@ const handleClick = (letter) => {
 };
 
 const addLetter = (letter) => {
-  if (currentTile < 5 && currentRow < 5) {
+  if (currentTile < 5 && currentRow < 6) {
     const tile = document.getElementById(
       "row-" + currentRow + "-charElement-" + currentTile
     );
@@ -165,22 +167,32 @@ const checkRow = () => {
       .then((json) => {
         //console.log(json);
         if (json == "Entry word not found") {
-          showMessage("Word not in list");
+          // showMessage("Word not in list");
+          messageChip("redChip", "The word doesn't exist!", 2500);
           statusCode = 0;
           return;
         } else {
           manuverColor();
           if (wordle == guess) {
-            showMessage("Magnificent!");
+            // showMessage("Magnificent!");
+            messageChip("greenChip", "Hurrey! You did it👍", 3000);
             isGameOver = true;
+            successCelebration();
+            setTimeout(() => {
+              successModal();
+            }, 3000);
             return;
           } else {
-            if (currentRow >= 4) {
+            if (currentRow >= 5) {
               isGameOver = true;
-              showMessage("Game Over! Wordle is "+wordle);
+              // showMessage("Game Over! Wordle is " + wordle);
+              messageChip("yellowChip", "Game Over! Wordle is " + wordle, 5000);
+              setTimeout(() => {
+                successModal();
+              }, 3100);
               return;
             }
-            if (currentRow < 4) {
+            if (currentRow < 5) {
               currentRow++;
               currentTile = 0;
               statusCode = 0;
@@ -194,12 +206,12 @@ const checkRow = () => {
   }
 };
 
-const showMessage = (message) => {
-  const messageBox = document.createElement("p");
-  messageBox.textContent = message;
-  messageSection.append(messageBox);
-  setTimeout(() => messageSection.removeChild(messageBox), 2000);
-};
+// const showMessage = (message) => {
+//   const messageBox = document.createElement("p");
+//   messageBox.textContent = message;
+//   messageSection.append(messageBox);
+//   setTimeout(() => messageSection.removeChild(messageBox), 2000);
+// };
 
 const addColorToKey = (keyLetter, colorClass) => {
   const key = document.getElementById(keyLetter);
@@ -249,3 +261,69 @@ const manuverColor = () => {
 //    tile.classList.add("change-to-grey");
 //    addColorToKey(dataLetter, "change-to-grey");
 //  }
+
+const successCelebration = () => {
+  const celebration = document.createElement("div");
+  celebration.classList.add("celebration");
+  celebration.innerHTML = ` <lottie-player
+    src="https://assets9.lottiefiles.com/packages/lf20_lg6lh7fp.json"
+    background="transparent"
+    speed="0.6"
+    style="width: 800px; height: 800px;"
+    autoplay
+  ></lottie-player>`;
+
+  bodySection.append(celebration);
+};
+
+const successModal = () => {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+  modalContent.innerHTML = `
+  <div class="closeIcon">
+  <span class="close">&times;</span>
+  </div>
+  <div class="modalMessage">
+  <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_fgltupfx.json"  background="transparent"  speed="0.8"  style="width: 300px; height: 250px;"  loop  autoplay></lottie-player>
+  </div>
+  <div class="buttonDiv">
+  <button onclick="refreshPage()">Play Again</button>
+  </div>
+  `;
+  modal.append(modalContent);
+  bodySection.append(modal);
+};
+
+const modal = document.getElementsByClassName("modal");
+const closeButton = document.getElementsByClassName("closeIcon");
+window.onclick = function (event) {
+  if (
+    event.target.classList[0] == "modal" ||
+    event.target.classList[0] == "close"
+  ) {
+    bodySection.removeChild(modal[0]);
+  }
+};
+
+const messageChip = (code, message, time) => {
+  const chip = document.createElement("div");
+  chip.classList.add("chipId");
+  chip.innerHTML = `
+  <div class=${code}>${message}</div>
+  `;
+  bodySection.append(chip);
+  setTimeout(() => {
+    // console.log(chip);
+    const deleteChip = document.querySelector(".chipId");
+    console.log(deleteChip);
+    bodySection.removeChild(deleteChip);
+  }, time);
+};
+
+// messageChip("redChip", "The word doesn't exist!");
+
+const refreshPage = () => {
+  window.location.reload();
+};
