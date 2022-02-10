@@ -4,16 +4,16 @@ const messageSection = document.querySelector(".message-section");
 const bodySection = document.querySelector("body");
 
 let wordle = "SUPER";
-// const getWordle = () => {
-//   fetch("https://wordle-plus-plus.herokuapp.com/word")
-//     .then((response) => response.json())
-//     .then((json) => {
-//       //console.log(json);
-//       wordle = json.toUpperCase();
-//     })
-//     .catch((err) => console.log(err));
-// };
-//getWordle();
+const getWordle = () => {
+  fetch("https://wordle-plus-plus.herokuapp.com/word")
+    .then((response) => response.json())
+    .then((json) => {
+      //console.log(json);
+      wordle = json.toUpperCase();
+    })
+    .catch((err) => console.log(err));
+};
+getWordle();
 const keys = [
   "Q",
   "W",
@@ -168,15 +168,14 @@ const checkRow = () => {
         //console.log(json);
         if (json == "Entry word not found") {
           // showMessage("Word not in list");
-          messageChip("redChip", "The word doesn't exist!",2500);
+          messageChip("redChip", "The word doesn't exist!", 2500);
           statusCode = 0;
           return;
-        } else
-        {
+        } else {
           manuverColor();
           if (wordle == guess) {
             // showMessage("Magnificent!");
-            messageChip("greenChip", "Hurrey! You did it👍",3000);
+            messageChip("greenChip", "Hurrey! You did it👍", 3000);
             isGameOver = true;
             successCelebration();
             setTimeout(() => {
@@ -187,7 +186,7 @@ const checkRow = () => {
             if (currentRow >= 5) {
               isGameOver = true;
               // showMessage("Game Over! Wordle is " + wordle);
-              messageChip("yellowChip", "Game Over! Wordle is " + wordle,5000);
+              messageChip("yellowChip", "Game Over! Wordle is " + wordle, 5000);
               setTimeout(() => {
                 successModal();
               }, 3100);
@@ -200,11 +199,11 @@ const checkRow = () => {
             }
           }
         }
-     })
+      })
       .catch((err) => {
         console.log(err);
       });
-   }
+  }
 };
 
 // const showMessage = (message) => {
@@ -308,24 +307,23 @@ window.onclick = function (event) {
   }
 };
 
-const messageChip = (code,message,time) => {  
-  const chip = document.createElement("div")
-  chip.classList.add("chipId")
+const messageChip = (code, message, time) => {
+  const chip = document.createElement("div");
+  chip.classList.add("chipId");
   chip.innerHTML = `
   <div class=${code}>${message}</div>
   `;
-  bodySection.append(chip)
+  bodySection.append(chip);
   setTimeout(() => {
     // console.log(chip);
-    const deleteChip = document.querySelector(".chipId")
+    const deleteChip = document.querySelector(".chipId");
     console.log(deleteChip);
-     bodySection.removeChild(deleteChip);
-  },time);
+    bodySection.removeChild(deleteChip);
+  }, time);
 };
 
 // messageChip("redChip", "The word doesn't exist!");
 
-
 const refreshPage = () => {
   window.location.reload();
-}
+};
