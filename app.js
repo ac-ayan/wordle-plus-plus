@@ -82,7 +82,13 @@ keys.forEach((key) => {
 });
 
 //* Handle Key Press START
-
+const handleKeyPressMain = (e) => {
+      console.log(e.key);
+      let letter = e.key.toUpperCase();
+      if (!isGameOver) {
+         addLetter(letter);
+        }      
+      }
 const handleKeyPress = (e) => {
   console.log(e.key);
   let letter = e.key.toUpperCase();
@@ -104,10 +110,11 @@ const handleKeyPress = (e) => {
       return;
     }
 
-    addLetter(letter);
+   
   }
 };
 document.addEventListener("keydown", handleKeyPress);
+document.addEventListener("keypress",handleKeyPressMain)
 //* Handle Key Press END
 
 const handleClick = (letter) => {
