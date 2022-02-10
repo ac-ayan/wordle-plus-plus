@@ -3,7 +3,7 @@ const keySection = document.querySelector(".keys-section");
 const messageSection = document.querySelector(".message-section");
 const bodySection = document.querySelector("body");
 
-let wordle = "SUPER";
+let wordle;
 const getWordle = () => {
   fetch("https://wordle-plus-plus.herokuapp.com/word")
     .then((response) => response.json())
