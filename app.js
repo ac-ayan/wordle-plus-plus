@@ -83,14 +83,14 @@ keys.forEach((key) => {
 
 //* Handle Key Press START
 const handleKeyPressMain = (e) => {
-      console.log(e.key);
-      let letter = e.key.toUpperCase();
-      if (!isGameOver) {
-         addLetter(letter);
-        }      
-      }
+  //console.log(e.key);
+  let letter = e.key.toUpperCase();
+  if (!isGameOver) {
+    addLetter(letter);
+  }
+};
 const handleKeyPress = (e) => {
-  console.log(e.key);
+  //console.log(e.key);
   let letter = e.key.toUpperCase();
   if (!isGameOver) {
     if (letter === "BACKSPACE") {
@@ -109,12 +109,10 @@ const handleKeyPress = (e) => {
       }
       return;
     }
-
-   
   }
 };
 document.addEventListener("keydown", handleKeyPress);
-document.addEventListener("keypress",handleKeyPressMain)
+document.addEventListener("keypress", handleKeyPressMain);
 //* Handle Key Press END
 
 const handleClick = (letter) => {
@@ -147,6 +145,10 @@ const addLetter = (letter) => {
     );
     tile.textContent = letter;
     tile.setAttribute("data", letter);
+    tile.classList.add("active-Tile");
+    setTimeout(() => {
+      tile.classList.add("inactiveScale");
+    }, 50);
     guessRows[currentRow][currentTile] = letter;
     //console.log(guessRows)
     currentTile++;
@@ -159,12 +161,22 @@ const deleteLetter = () => {
     const tile = document.getElementById(
       "row-" + currentRow + "-charElement-" + currentTile
     );
+    tile.classList.remove("active-Tile");
+    tile.classList.remove("inactiveScale");
     tile.textContent = "";
     guessRows[currentRow][currentTile] = "";
     tile.setAttribute("data", "");
   }
 };
-
+const rootCheck = () => {
+  runLoader();
+  fetch("https://wordle-plus-plus.herokuapp.com/check/?word=apple")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log("Root check completed");
+      closeLoader();
+  })
+}
 const checkRow = () => {
   //console.log("Inside Checkrow");
   const guess = guessRows[currentRow].join("");
@@ -232,24 +244,25 @@ const manuverColor = () => {
   rowTiles.forEach((tile) => {
     guess.push({ letter: tile.getAttribute("data"), color: "change-to-grey" });
   });
-  guess.forEach((guess, index) => {
-    if (guess.letter == wordle[index]) {
-      guess.color = "change-to-green";
-      checkWordle = checkWordle.replace(guess.letter, "");
-    }
-  });
   guess.forEach((guess) => {
     if (checkWordle.includes(guess.letter)) {
       guess.color = "change-to-yellow";
       checkWordle = checkWordle.replace(guess.letter, "");
     }
   });
+  guess.forEach((guess, index) => {
+    if (guess.letter == wordle[index]) {
+      guess.color = "change-to-green";
+      checkWordle = checkWordle.replace(guess.letter, "");
+    }
+  });
+
   rowTiles.forEach((tile, index) => {
     setTimeout(() => {
       tile.classList.add("flip");
       tile.classList.add(guess[index].color);
       addColorToKey(guess[index].letter, guess[index].color);
-    }, 500 * index);
+    }, 400 * index);
   });
 };
 
@@ -273,7 +286,7 @@ const successCelebration = () => {
   const celebration = document.createElement("div");
   celebration.classList.add("celebration");
   celebration.innerHTML = ` <lottie-player
-    src="https://assets9.lottiefiles.com/packages/lf20_lg6lh7fp.json"
+    src="./assets/lottie-assets/85744-success.json"
     background="transparent"
     speed="0.6"
     style="width: 800px; height: 800px;"
@@ -293,7 +306,7 @@ const successModal = () => {
   <span class="close">&times;</span>
   </div>
   <div class="modalMessage">
-  <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_fgltupfx.json"  background="transparent"  speed="0.8"  style="width: 300px; height: 250px;"  loop  autoplay></lottie-player>
+  <lottie-player src="./assets/lottie-assets/89021-jumping-gift-boxes.json"  background="transparent"  speed="0.8"  style="width: 300px; height: 250px;"  loop  autoplay></lottie-player>
   </div>
   <div class="buttonDiv">
   <button onclick="refreshPage()">Play Again</button>
@@ -334,3 +347,24 @@ const messageChip = (code, message, time) => {
 const refreshPage = () => {
   window.location.reload();
 };
+
+const runLoader = () => {
+  const loader = document.createElement("div");
+  loader.classList.add("loader");
+  loader.innerHTML = `
+  <lottie-player
+    src="./assets/lottie-assets/74887-loader-animation.json"
+    background="transparent"
+    speed="0.6"
+    style="width: 200px; height: 200px;"
+    autoplay
+  ></lottie-player>
+  `;
+  bodySection.append(loader);
+};
+const closeLoader = () => {
+  const loader = document.querySelector(".loader")
+  console.log(loader);
+  bodySection.removeChild(loader);
+}
+rootCheck();
