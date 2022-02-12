@@ -175,8 +175,8 @@ const rootCheck = () => {
     .then((json) => {
       console.log("Root check completed");
       closeLoader();
-  })
-}
+    });
+};
 const checkRow = () => {
   //console.log("Inside Checkrow");
   const guess = guessRows[currentRow].join("");
@@ -197,6 +197,9 @@ const checkRow = () => {
             messageChip("greenChip", "Hurrey! You did it👍", 3000);
             isGameOver = true;
             successCelebration();
+            setTimeout(() => {
+              successCelebrationPlus();
+            }, 500);
             setTimeout(() => {
               successModal();
             }, 3000);
@@ -240,14 +243,20 @@ const addColorToKey = (keyLetter, colorClass) => {
 const manuverColor = () => {
   const rowTiles = document.querySelector("#row-" + currentRow).childNodes;
   let checkWordle = wordle;
+  let dupCheck = wordle;
   const guess = [];
   rowTiles.forEach((tile) => {
     guess.push({ letter: tile.getAttribute("data"), color: "change-to-grey" });
   });
+
+  //console.log(guess);
   guess.forEach((guess) => {
-    if (checkWordle.includes(guess.letter)) {
+    //console.log(guess);
+    if (dupCheck.includes(guess.letter)) {
       guess.color = "change-to-yellow";
+      dupCheck = dupCheck.replace(guess.letter, "@");
       checkWordle = checkWordle.replace(guess.letter, "");
+      //console.log(dupCheck);
     }
   });
   guess.forEach((guess, index) => {
@@ -288,8 +297,21 @@ const successCelebration = () => {
   celebration.innerHTML = ` <lottie-player
     src="./assets/lottie-assets/85744-success.json"
     background="transparent"
-    speed="0.6"
+    speed="0.8"
     style="width: 800px; height: 800px;"
+    autoplay
+  ></lottie-player>`;
+
+  bodySection.append(celebration);
+};
+const successCelebrationPlus = () => {
+  const celebration = document.createElement("div");
+  celebration.classList.add("celebration");
+  celebration.innerHTML = ` <lottie-player
+    src="./assets/lottie-assets/74694-confetti.json"
+    background="transparent"
+    speed="0.5"
+    style="width: 900px; height: 900px;"
     autoplay
   ></lottie-player>`;
 
@@ -337,7 +359,7 @@ const messageChip = (code, message, time) => {
   setTimeout(() => {
     // console.log(chip);
     const deleteChip = document.querySelector(".chipId");
-    console.log(deleteChip);
+    //console.log(deleteChip);
     bodySection.removeChild(deleteChip);
   }, time);
 };
@@ -363,8 +385,8 @@ const runLoader = () => {
   bodySection.append(loader);
 };
 const closeLoader = () => {
-  const loader = document.querySelector(".loader")
-  console.log(loader);
+  const loader = document.querySelector(".loader");
+  //console.log(loader);
   bodySection.removeChild(loader);
-}
+};
 rootCheck();
